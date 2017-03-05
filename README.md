@@ -9,7 +9,7 @@ This is a work in progress that is already usable but which still requires some 
 ## Quickstart
 
     sudo make build
-    sudo make run
+    MOUNT_SHARES="//server/share1 //server/share2" sudo -E make run
 
 ## Requirements
 

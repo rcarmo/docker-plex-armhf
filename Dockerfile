@@ -5,6 +5,7 @@ MAINTAINER Rui Carmo https://github.com/rcarmo
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install \
     apt-transport-https \
     wget \
+    cifs.utils \
     -y --force-yes  \
  && wget -O - https://dev2day.de/pms/dev2day-pms.gpg.key | apt-key add - \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -25,10 +26,12 @@ VOLUME /tmp
 ENV PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=6
 ENV PLEX_MEDIA_SERVER_HOME=/usr/lib/plexmediaserver
 ENV PLEX_MEDIA_SERVER_MAX_STACK_SIZE=3000
+ENV PLEX_MEDIA_SERVER_MAX_RSS=1024
+ENV PLEX_MEDIA_SERVER_MAX_VM=1024
 ENV PLEX_MEDIA_SERVER_TMPDIR=/tmp
 ENV PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=/srv/plex/data
 ENV LD_LIBRARY_PATH="${PLEX_MEDIA_SERVER_HOME}"
 WORKDIR /srv/plex/data
+ADD start.sh /start.sh
 
-CMD ulimit -s $PLEX_MAX_STACK_SIZE; \
-    (cd $PLEX_MEDIA_SERVER_HOME; ./Plex\ Media\ Server)
+CMD /start.sh
