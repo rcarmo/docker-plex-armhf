@@ -2,9 +2,11 @@
 
 Run the Plex media server as a Docker container on the Raspberry Pi or similar hardware.
 
-## Status
+## Usage
 
-This is currently working for me -- which means your mileage may vary.
+The usage scenario for this is as follows: I have a very old NAS that is unable to run Plex by itself, so I decided to get Plex running on a Raspberry Pi and mount my media library on it via SMB.
+
+However, since I don't fully trust the Plex binaries and don't want to pollute the host userland, running this in a container lets me keep tabs on it _and_ upgrade it relatively easily in the future.
 
 ## Quickstart
 
