@@ -1,6 +1,6 @@
 export IMAGE_NAME=rcarmo/plex:armhf
 export SHARES?="//server/share1 //server/share2"
-export DATA_FOLDER?=/tmp/plex/data
+export DATA_FOLDER?=/srv/plex/data
 build:
 	docker build -t $(IMAGE_NAME) .
 
