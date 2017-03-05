@@ -32,6 +32,14 @@ ENV PLEX_MEDIA_SERVER_TMPDIR=/tmp
 ENV PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=/srv/plex/data
 ENV LD_LIBRARY_PATH="${PLEX_MEDIA_SERVER_HOME}"
 WORKDIR /srv/plex/data
-ADD start.sh /start.sh
 
+# Startup script
+ADD start.sh /start.sh
 CMD /start.sh
+
+# Labels
+ARG VCS_REF
+ARG BUILD_DATE
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/rcarmo/docker-plex-armhf"
