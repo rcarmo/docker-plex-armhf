@@ -1,8 +1,13 @@
 export IMAGE_NAME=rcarmo/plex:armhf
 export SHARES?="//server/share1 //server/share2"
 export DATA_FOLDER?=/srv/plex/data
+export VCS_REF=`git rev-parse --short HEAD`
+export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 build:
-	docker build -t $(IMAGE_NAME) .
+	docker build \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VCS_REF=$(VCS_REF) \
+		-t $(IMAGE_NAME) .
 
 # Build a Docker network that spans the typical home router address space
 # but pin the IP addresses it gives out to the upper range
