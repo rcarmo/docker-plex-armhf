@@ -28,6 +28,13 @@ run:
 		--env PLEX_MOUNT_SHARES=$(SHARES) \
 		--net=lan -it $(IMAGE_NAME)
 
+daemon:
+	-mkdir -p $(DATA_FOLDER)
+	docker run -v $(DATA_FOLDER):/srv/plex/data \
+		--cap-add SYS_ADMIN \
+		--cap-add DAC_READ_SEARCH \
+		--env PLEX_MOUNT_SHARES=$(SHARES) \
+		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 rmi:
 	docker rmi -f $(IMAGE_NAME)
 

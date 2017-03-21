@@ -19,7 +19,7 @@ First, create a network that maps to your LAN on your Docker host:
 	-o parent=eth0 \
 	lan
 
-Then start the image (use `-d` to leave it running as a deamon), specifying which remote SMB shares to mount:
+Then start the image (use `-d` to leave it running as a daemon), specifying which remote SMB shares to mount:
 
     docker run -v /your/data/path:/srv/plex/data \
     --cap-add SYS_ADMIN \
