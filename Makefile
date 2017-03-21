@@ -1,5 +1,6 @@
 export IMAGE_NAME=rcarmo/plex:armhf
 export SHARES?="//server/share1 //server/share2"
+export RO_SHARES?="//server/share3"
 export DATA_FOLDER?=/srv/plex/data
 export VCS_REF=`git rev-parse --short HEAD`
 export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
@@ -30,7 +31,7 @@ run:
 	docker run -v $(DATA_FOLDER):/srv/plex/data \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
-		--env PLEX_MOUNT_SHARES=$(SHARES) \
+		--env PLEX_MOUNT_READONLY_SHARES=$(SHARES) \
 		--net=lan -it $(IMAGE_NAME)
 
 daemon-local-data:
@@ -39,7 +40,7 @@ daemon-local-data:
 		-v $(DATA_FOLDER):/srv/plex/data \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
-		--env PLEX_MOUNT_SHARES=$(SHARES) \
+		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 
 daemon-remote-data:
@@ -47,7 +48,8 @@ daemon-remote-data:
 		-e PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=$(DATA_FOLDER) \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
-		--env PLEX_MOUNT_SHARES=$(SHARES) \
+		--env PLEX_MOUNT_WRITABLE_SHARES=$(SHARES) \
+		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 rmi:
 	docker rmi -f $(IMAGE_NAME)
