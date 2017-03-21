@@ -2,11 +2,15 @@
 
 for share in $PLEX_MOUNT_SHARES
 do
-	basename=`basename $share`
-	echo Mounting $share as /mnt/$basename
-	rm -rf /mnt/$basename
-	mkdir /mnt/$basename
-	mount -t cifs -o user=guest,ro,password="" $share /mnt/$basename
+    IFS=':' read local remote <<< "$share"
+    if [[ -z $remote ]]; then
+        remote=$local
+        local=/mnt/`basename $local`
+    fi
+	echo Mounting $remote as $local
+	rm -rf $local
+	mkdir $local
+	mount -t cifs -o user=guest,ro,password="" $remote $local
 done
 
 ulimit -s $PLEX_SERVER_MAX_STACK_SIZE

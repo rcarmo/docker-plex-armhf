@@ -24,8 +24,13 @@ Then start the image (use `-d` to leave it running as a deamon), specifying whic
     docker run -v /your/data/path:/srv/plex/data \
     --cap-add SYS_ADMIN \
     --cap-add DAC_READ_SEARCH \
-    --env PLEX_MOUNT_SHARES="//server1/folder //server2/folder" \
+    --env PLEX_MOUNT_SHARES="/mnt/local://server1/remote //server1/folderA //server2/folderB" \
     --net=lan -it rcarmo/plex:armhf
+
+Note that:
+
+* You can specify `local:remote` pairs to mount a folder
+* A remote share called `folder` will be mounted on `/mnt/folder`
 
 ## Requirements
 
