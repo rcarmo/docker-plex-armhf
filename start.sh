@@ -7,10 +7,10 @@ do
         remote=$local
         local=/mnt/`basename $local`
     fi
-	echo Mounting $remote as $local
-	rm -rf $local
-	mkdir $local
-	mount -t cifs -o user=guest,ro,password="" $remote $local
+    echo Mounting $remote as $local
+    rm -rf $local
+    mkdir -p $local
+    mount -t cifs -o user=guest,ro,password="" $remote $local
 done
 
 ulimit -s $PLEX_SERVER_MAX_STACK_SIZE
