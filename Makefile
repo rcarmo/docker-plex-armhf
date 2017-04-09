@@ -48,7 +48,7 @@ daemon-local-data:
 		--env PLEXCONNECT_ENABLE_PLEXGDM=True \
 		--env PLEXCONNECT_HOSTTOINTERCEPT=trailers.apple.com \
 		--env PLEXCONNECT_LOGLEVEL=High \
-                --env PLEXCONNECT_LOGPATH=${DATA_FOLDER}/PlexConnect \
+		--env PLEXCONNECT_LOGPATH=${DATA_FOLDER}/PlexConnect \
 		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 
