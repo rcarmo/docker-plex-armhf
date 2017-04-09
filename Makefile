@@ -2,6 +2,7 @@ export IMAGE_NAME=rcarmo/plex:armhf
 export SHARES?="//server/share1 //server/share2"
 export RO_SHARES?="//server/share3"
 export DATA_FOLDER?=/srv/plex/data
+export TEMP_FOLDER?=/srv/plex/tmp
 export VCS_REF=`git rev-parse --short HEAD`
 export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 build:
@@ -28,7 +29,9 @@ shell:
 # Run this (for testing)
 run:
 	-mkdir -p $(DATA_FOLDER)
+	-mkdir -p $(TEMP_FOLDER)
 	docker run -v $(DATA_FOLDER):/srv/plex/data \
+		-v /tmp:/srv/plex/tmp \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
 		--env PLEX_MOUNT_READONLY_SHARES=$(SHARES) \
@@ -36,21 +39,29 @@ run:
 
 daemon-local-data:
 	-mkdir -p $(DATA_FOLDER)
+	-mkdir -p $(TEMP_FOLDER)
 	docker run -h plex-container \
 		-v $(DATA_FOLDER):/srv/plex/data \
+		-v /tmp:/srv/plex/tmp \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
+		--env PLEXCONNECT_ENABLE_PLEXGDM=True \
+		--env PLEXCONNECT_HOSTTOINTERCEPT=trailers.apple.com \
+		--env PLEXCONNECT_LOGLEVEL=High \
+                --env PLEXCONNECT_LOGPATH=${DATA_FOLDER}/PlexConnect \
 		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 
 daemon-remote-data:
 	docker run -h plex-container \
 		-e PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=$(DATA_FOLDER) \
+		-v /tmp:/srv/plex/tmp \
 		--cap-add SYS_ADMIN \
 		--cap-add DAC_READ_SEARCH \
 		--env PLEX_MOUNT_WRITABLE_SHARES=$(SHARES) \
 		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
+
 rmi:
 	docker rmi -f $(IMAGE_NAME)
 
@@ -60,4 +71,3 @@ push:
 clean:
 	-docker rm -v $$(docker ps -a -q -f status=exited)
 	-docker rmi $$(docker images -q -f dangling=true)
-	-docker rmi $(IMAGE_NAME)

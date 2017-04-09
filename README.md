@@ -1,6 +1,6 @@
 # docker-plex-armhf
 
-Run the Plex media server as a Docker container on the Raspberry Pi or similar hardware.
+Run the Plex media server and PlexConnect as a Docker container on the Raspberry Pi or similar hardware.
 
 ## Usage
 
@@ -37,3 +37,10 @@ Note that:
 * An `armhf` machine like the Raspberry Pi 2/3 or an ODROID development board
 * A Linux distribution that can run Docker (like Ubuntu 16.04.2, which is what I use) with a kernel that supports the `macvlan` network type.
 
+## PlexConnect Setup on Apple TV 3 (up to 7.2.2, at least)
+
+* Go to the Apple TV settings menu
+* Set the DNS IP address to that of this container
+* Select General then scroll the cursor down to highlight "Send Data To Apple" and set to "No".
+* With "Send Data To Apple" highlighted, press "Play" (not the normal Select button) and you will be prompted to add a profile.
+* Enter `http://trailers.apple.com/trailers.cer`

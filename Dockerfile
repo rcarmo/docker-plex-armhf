@@ -4,14 +4,17 @@ MAINTAINER Rui Carmo https://github.com/rcarmo
 # Update the system and set up the ReadyNAS repository
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install \
     apt-transport-https \
-    wget \
     cifs.utils \
+    git \
+    python-pil \
+    supervisor \
+    wget \
     -y --force-yes  \
- && wget -O - https://dev2day.de/pms/dev2day-pms.gpg.key | apt-key add - \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Plex and move its data directory to someplace sensible
 RUN echo "deb https://dev2day.de/pms/ jessie main" | tee /etc/apt/sources.list.d/pms.list \
+ && wget -O - https://dev2day.de/pms/dev2day-pms.gpg.key | apt-key add - \
  && apt-get update && apt-get install plexmediaserver -y \
  && mkdir -p /srv/plex/data \
  && chown plex:nogroup /srv/plex/data \
@@ -19,6 +22,13 @@ RUN echo "deb https://dev2day.de/pms/ jessie main" | tee /etc/apt/sources.list.d
  && rm -rf Plex\ Media\ Server \
  && ln -s /srv/plex/data Plex\ Media\ Server \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Add configuration files and scripts
+ADD rootfs /
+
+# Install and patch PlexConnect
+RUN cd /opt \
+ && git clone https://github.com/iBaa/PlexConnect.git 
 
 # Expose mounts and ports
 VOLUME /srv/plex/data
@@ -33,9 +43,10 @@ ENV PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=/srv/plex/data
 ENV LD_LIBRARY_PATH="${PLEX_MEDIA_SERVER_HOME}"
 WORKDIR /srv/plex/data
 
+EXPOSE 53 80 443 32400
+
 # Startup script
-ADD start.sh /start.sh
-CMD /start.sh
+CMD ["/usr/bin/supervisord"]
 
 # Labels
 ARG VCS_REF

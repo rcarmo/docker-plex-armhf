@@ -29,5 +29,9 @@ done
 ulimit -s $PLEX_SERVER_MAX_STACK_SIZE
 ulimit -m $PLEX_SERVER_MAX_RSS
 ulimit -m $PLEX_SERVER_MAX_VM
+
+# Remove PID file in case we were forcibly restarted
+rm -f $PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR/Plex\ Media\ Server/plexmediaserver.pid
+
 cd $PLEX_MEDIA_SERVER_HOME
 ./Plex\ Media\ Server
