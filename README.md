@@ -44,3 +44,7 @@ Note that:
 * Select General then scroll the cursor down to highlight "Send Data To Apple" and set to "No".
 * With "Send Data To Apple" highlighted, press "Play" (not the normal Select button) and you will be prompted to add a profile.
 * Enter `http://trailers.apple.com/trailers.cer`
+
+## Changelog
+
+* 2017-09-02 Updated Plex to 1.8.1.4139
