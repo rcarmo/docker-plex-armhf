@@ -6,7 +6,7 @@ Run the Plex media server and PlexConnect as a Docker container on the Raspberry
 
 The usage scenario for this is as follows: I have a very old NAS that is unable to run Plex by itself, so I decided to get Plex running on a Raspberry Pi and mount my media library on it via SMB.
 
-However, since I don't fully trust the Plex binaries and don't want to pollute the host userland, running this in a container lets me keep tabs on it _and_ upgrade it relatively easily in the future.
+However, since I don't want to pollute the host userland, running this in a container lets me keep tabs on it _and_ upgrade it relatively easily in the future.
 
 ## Quickstart
 
@@ -14,7 +14,7 @@ First, create a network that maps to your LAN on your Docker host:
 
 	docker network create -d macvlan \
 	--subnet=192.168.xxx.0/24 \
-        --gateway=192.168.xxx.254 \
+	--gateway=192.168.xxx.254 \
 	--ip-range=192.168.xxx.128/25 \
 	-o parent=eth0 \
 	lan
@@ -34,7 +34,7 @@ Note that:
 
 ## Requirements
 
-* An `armhf` machine like the Raspberry Pi 2/3 or an ODROID development board
+* An `armhf` machine like the Raspberry Pi 2/3 or an ODROID development board.
 * A Linux distribution that can run Docker (like Ubuntu 16.04.2, which is what I use) with a kernel that supports the `macvlan` network type.
 
 ## PlexConnect Setup on Apple TV 3 (up to 7.2.2, at least)
