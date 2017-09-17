@@ -47,4 +47,5 @@ Note that:
 
 ## Changelog
 
+* 2017-09-17 Updated Plex to 1.8.4.4249
 * 2017-09-02 Updated Plex to 1.8.1.4139
