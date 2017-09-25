@@ -5,6 +5,7 @@ export DATA_FOLDER?=/srv/plex/data
 export TEMP_FOLDER?=/srv/plex/tmp
 export VCS_REF=`git rev-parse --short HEAD`
 export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+export DNS_SERVER=192.168.1.254
 build:
 	docker build \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
@@ -50,6 +51,7 @@ daemon-local-data:
 		--env PLEXCONNECT_LOGLEVEL=High \
 		--env PLEXCONNECT_LOGPATH=${DATA_FOLDER}/PlexConnect \
 		--env PLEX_MOUNT_READONLY_SHARES=$(RO_SHARES) \
+		--dns $(DNS_SERVER) \
 		--net=lan -d --restart unless-stopped $(IMAGE_NAME)
 
 daemon-remote-data:
