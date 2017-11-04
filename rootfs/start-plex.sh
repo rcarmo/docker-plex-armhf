@@ -8,7 +8,6 @@ do
         local=/mnt/`basename $local`
     fi
     echo Mounting $remote as $local - read-only
-    rm -rf $local
     mkdir -p $local
     mount -t cifs -o user=guest,ro,password="" $remote $local
 done
@@ -21,7 +20,6 @@ do
         local=/mnt/`basename $local`
     fi
     echo Mounting $remote as $local - writable
-    rm -rf $local
     mkdir -p $local
     mount -t cifs -o user=guest,password="" $remote $local
 done

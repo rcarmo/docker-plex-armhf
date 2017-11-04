@@ -1,6 +1,9 @@
 FROM armv7/armhf-debian:jessie
 MAINTAINER Rui Carmo https://github.com/rcarmo
 
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV TERM="xterm" LANG="C.UTF-8" LC_ALL="C.UTF-8"
+
 # Update the system and set up the ReadyNAS repository
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install \
     apt-transport-https \
